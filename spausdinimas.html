@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Toniro – 3D Spausdinimas</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    /* Stiliai */
+    :root {
+      --bg-dark: #121212;
+      --text-dark: #f0f0f0;
+      --section-bg-dark: #1e1e1e;
+      --header-bg-dark: #1f1f1f;
+      --nav-bg-dark: #2a2a2a;
+      --footer-bg-dark: #1f1f1f;
+      --link-color-dark: #ffcc00;
+      --bg-light: #f4f4f4;
+      --text-light: #111;
+      --section-bg-light: #fff;
+      --header-bg-light: #fff;
+      --nav-bg-light: #ccc;
+      --footer-bg-light: #ddd;
+    }
+    html { transition: background .3s, color .3s; }
+    body {
+      margin:0; padding:0; font-family:"Segoe UI",sans-serif;
+      background:var(--bg-dark); color:var(--text-dark);
+      display:flex; flex-direction:column; min-height:100vh;
+    }
+    html.light-mode body { background:var(--bg-light); color:var(--text-light); }
+    header { background:var(--header-bg-dark); padding:10px 20px; display:flex; justify-content:flex-end; }
+    html.light-mode header { background:var(--header-bg-light); }
+    .header-right button, .header-right a {
+      margin-left:16px; color:inherit; background:transparent;
+      border:none; font-size:20px; cursor:pointer; text-decoration:none;
+    }
+    .top-nav { background:var(--nav-bg-dark); padding:10px 20px;
+      display:flex; justify-content:space-between; align-items:center;
+    }
+    html.light-mode .top-nav { background:var(--nav-bg-light); }
+    .nav-left a { margin-right:24px; color:inherit; text-decoration:none; font-weight:600; }
+    main { flex:1; background:var(--section-bg-dark); padding:40px 20px; }
+    html.light-mode main { background:var(--section-bg-light); }
+    .settings { display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; }
+    .settings .panel {
+      background: rgba(255,255,255,0.05); padding:20px; border-radius:8px;
+    }
+    .settings label { display:block; margin-bottom:10px; color:inherit; }
+    .settings input, .settings select {
+      width:100%; padding:8px; background:#2a2a2a; border:1px solid #444;
+      color:#f0f0f0;
+    }
+    .submit-btn {
+      display:inline-block; margin-top:10px; padding:10px 20px;
+      background:#007bff; color:#fff; border:none; border-radius:25px;
+      cursor:pointer; font-weight:600; text-align:center;
+    }
+    footer {
+      background:var(--footer-bg-dark); color:var(--text-dark);
+      padding:40px 20px; text-align:center;
+    }
+    html.light-mode footer { background:var(--footer-bg-light); color:var(--text-light); }
+    .footer-sections { display:flex; justify-content:space-evenly;
+      flex-wrap:wrap; gap:20px;
+    }
+    .footer-column { max-width:200px; }
+    .footer-column h4 { margin-bottom:10px; }
+    .footer-column ul { list-style:none; padding:0; margin:0; }
+    .footer-column li { display:inline; margin:0 10px; }
+    .footer-column a { color:inherit; text-decoration:none; }
+    .footer-column a:hover { color:var(--link-color-dark); }
+    .social-icons a { margin:0 8px; font-size:20px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-right">
+      <button id="theme-toggle" aria-label="Perjungti režimą">🌙</button>
+      <a href="#" aria-label="LT"><img src="https://flagcdn.com/24x18/lt.png" alt="LT"></a>
+    </div>
+  </header>
+<!-- Secondary Navigation -->
+  <section class="top-nav" style="background: var(--nav-bg-dark); color: var(--text-dark); padding:10px 20px; display:flex; align-items:center; justify-content:space-between;">
+    <div class="nav-left" style="display:flex; align-items:center; gap:24px;">
+      <a href="index.html"><img src="sybau.png" alt="Toniro logo" style="height: 64px;"></a>
+      <a href="apie.html" style="color:inherit; text-decoration:none; font-weight:600;">Apie mus</a>
+      <a href="pagalba.html" style="color:inherit; text-decoration:none; font-weight:600;">Susisiekime</a>
+    </div>
+    <div class="nav-right" style="display:flex; gap:16px; align-items:center;">
+      <button class="icon-button" style="position:relative; background:transparent; border:none; font-size:20px; cursor:pointer;">
+      </button>
+    </div>
+  </section>
+  <main>
+    <h1>3D Spausdinimas</h1>
+    <div class="settings">
+      <div class="panel">
+        <label>* Kiekis:<input type="number" id="qty" /></label>
+        <label>* Medžiaga:<select id="material">
+          <option value="PLA" selected>PLA</option>
+          <option value="ABS">ABS</option>
+          <option value="ASA">ASA</option>
+          <option value="PETG">PETG</option>
+          <option value="PVB">PVB</option>
+          <option value="TPU">TPU</option>
+        </select></label>
+        <label>* Procesas:<select id="process">
+          <option selected>FDM</option>
+        </select></label>
+      </div>
+      <div class="panel subtotal">
+        <p style="color:red; font-weight:bold;">Kaina apskaičiuojama po peržiūrėjimo</p>
+        <p style="color:red; font-weight:bold;">Prisegti failą el. paštu</p>
+        <h4>Kainos</h4>
+        <ul style="list-style:none; padding:0; text-align:left;">
+          <li>• PLA: nuo 0.05 €/g</li>
+          <li>• ABS: nuo 0.10 €/g</li>
+          <li>• ASA: nuo 0.13 €/g</li>
+          <li>• PETG: nuo 0.07 €/g</li>
+          <li>• PVB: nuo 0.09 €/g</li>
+          <li>• TPU: nuo 0.15 €/g</li>
+        </ul>
+        <h4>Pristatymo laikas</h4>
+        <p>1–2 darbo dienos</p>
+      </div>
+      <div class="panel">
+        <label>* Spalva:<select id="color"></select></label>
+        <label>* Užpildymas:<select id="infill">
+          <option selected>20%</option>
+          <option>40%</option>
+          <option>60%</option>
+          <option>80%</option>
+          <option>95%</option>
+          <option>100%</option>
+        </select></label>
+      </div>
+      <div class="panel">
+        <button type="button" class="submit-btn" id="send-btn">Siųsti užklausą</button>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <div class="footer-sections">
+      <div class="footer-column">
+        <h4>ĮMONĖ</h4><ul><li><a href="apie.html">Apie mus</a></li><li>
+      </div>
+      <div class="footer-column">
+        <h4>PAGALBA</h4><ul><li><a href="pagalba.html">Susisiekime</a></li><li>
+      </div>
+      <div class="footer-column social-footer">
+        <p>SEKITE MUS</p><div class="social-icons">          
+          <a href="https://www.facebook.com/people/Toniro/" target="_blank"><i class="fab fa-facebook"></i></a>
+</div>
+      </div>
+    </div>
+  </footer>
+  <script>
+    document.addEventListener('DOMContentLoaded',()=>{
+      const btn = document.getElementById('theme-toggle'); if(btn){
+        const light=localStorage.getItem('theme')==='light';
+        document.documentElement.classList.toggle('light-mode',light);
+        btn.textContent=light?'🌞':'🌙';
+        btn.addEventListener('click',()=>{
+          const lm=document.documentElement.classList.toggle('light-mode');
+          localStorage.setItem('theme',lm?'light':'dark'); btn.textContent=lm?'🌞':'🌙';
+        });
+      }
+      const materialSel=document.getElementById('material');
+      const colorSel=document.getElementById('color');
+      const colorsMap={
+        PLA:["Žalia","Mėlyna","Balta","Juoda","Pilka","Rožinė","Violetinė","Ruda","Raudona","Oranžinė"],
+        ABS:["Balta","Juoda"],
+        ASA:["Balta","Juoda"],
+        PETG:["Žalia","Mėlyna","Balta","Juoda","Pilka","Rožinė","Violetinė","Ruda","Raudona","Oranžinė"],
+        PVB:["Mėlyna"],
+        TPU:["Balta","Juoda"]
+      };
+      function updateColors(mat){ colorSel.innerHTML='';
+        (colorsMap[mat]||[]).forEach(c=>{ const o=document.createElement('option'); o.value=c; o.textContent=c; colorSel.append(o); });
+      }
+      if(materialSel&&colorSel){ updateColors(materialSel.value); materialSel.addEventListener('change',()=>updateColors(materialSel.value)); }
+      document.getElementById('send-btn').addEventListener('click',()=>{
+        const qty=document.getElementById('qty').value;
+        const mat=materialSel.value;
+        const proc=document.getElementById('process').value;
+        const col=colorSel.value;
+        const inf=document.getElementById('infill').value;
+        const lines=[`Kiekis: ${qty}`,`Medžiaga: ${mat}`,`Procesas: ${proc}`,`Spalva: ${col}`,`Užpildymas: ${inf}`];
+        const body=encodeURIComponent(lines.join('\n'));
+        window.location.href=`mailto:info@toniro.lt?subject=3D%20spaudos%20užklausa&body=${body}`;
+      });
+    });
+  </script>
+</body>
+</html>

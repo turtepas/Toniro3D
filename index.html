@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Toniro</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    :root {
+      --bg-color-dark: #121212;
+      --text-color-dark: #f0f0f0;
+      --header-bg-dark: #1f1f1f;
+      --nav-bg-dark: #2a2a2a;
+      --section-bg-dark: #1e1e1e;
+      --clients-bg-dark: #0f0f0f;
+      --link-color-dark: #ffcc00;
+      --footer-bg-dark: #1f1f1f;
+      --footer-text-dark: #f0f0f0;
+
+      --bg-color-light: #f4f4f4;
+      --text-color-light: #111;
+      --header-bg-light: #fff;
+      --nav-bg-light: #ccc;
+      --section-bg-light: #fff;
+      --clients-bg-light: #f9f9f9;
+      --link-color-light: #0055aa;
+      --footer-bg-light: #ddd;
+      --footer-text-light: #333;
+    }
+
+    html { transition: background-color 0.3s, color 0.3s; }
+
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color-dark);
+      color: var(--text-color-dark);
+      margin: 0;
+      padding: 0;
+      scroll-behavior: smooth;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    html.light-mode body {
+      background-color: var(--bg-color-light);
+      color: var(--text-color-light);
+    }
+
+    /* Header */
+    header { background: var(--header-bg-dark); padding: 10px 20px; display: flex; justify-content: flex-end; }
+    html.light-mode header { background: var(--header-bg-light); }
+    .header-right button, .header-right a { margin-left: 16px; color: inherit; background: transparent; border: none; font-size: 20px; cursor: pointer; text-decoration: none; }
+
+    /* Secondary Nav */
+    .top-nav { background: var(--nav-bg-dark); padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
+    html.light-mode .top-nav { background: var(--nav-bg-light); }
+    .nav-left a { margin-right: 24px; color: inherit; text-decoration: none; font-weight: 600; }
+    .nav-right button { position: relative; background: transparent; border: none; font-size: 20px; cursor: pointer; }
+  
+
+    main { flex: 1; }
+
+    /* Paslaugos */
+    .cards-section { background: var(--section-bg-dark); padding: 60px 20px; display: flex; justify-content: center; }
+    html.light-mode .cards-section { background: var(--section-bg-light); }
+    .card { background: rgba(255, 255, 255, 0.05); border-radius: 16px; width: 220px; padding: 20px; text-align: center; color: inherit; transition: transform 0.3s; }
+    .card:hover {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 8px 20px rgba(255, 204, 0, 0.5), 0 0 15px rgba(255, 204, 0, 0.7);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .card h3 { margin: 10px 0; }
+    .card p { font-weight: bold; }
+    .card ul { list-style: none; padding-left: 0; text-align: left; }
+    .card ul li { margin-bottom: 6px; }
+    .card button { margin-top: 12px; background: #007bff; color: #fff; border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; }
+
+    /* Klientų atsiliepimai */
+    .clients-section { background: var(--clients-bg-dark); padding: 60px 20px; text-align: center; }
+    html.light-mode .clients-section { background: var(--clients-bg-light); }
+    .clients-section h2 { font-size: 32px; margin-bottom: 40px; }
+    .clients-cards { display: flex; justify-content: space-evenly; flex-wrap: wrap; gap: 20px; }
+    .client-card { background: rgba(255, 255, 255, 0.05); border-radius: 12px; width: 300px; padding: 20px; color: inherit; transition: transform 0.3s; }
+    .client-card:hover { transform: translateY(-5px); }
+    .client-card p { font-style: italic; margin-bottom: 16px; }
+
+    /* Footer */
+    footer { background: var(--footer-bg-dark); color: var(--footer-text-dark); padding: 40px 20px; text-align: center; }
+    html.light-mode footer { background: var(--footer-bg-light); color: var(--footer-text-light); }
+    .footer-sections { display: flex; justify-content: space-evenly; flex-wrap: wrap; gap: 20px; }
+    .footer-column { max-width: 200px; }
+    .footer-column h4 { margin-bottom: 10px; }
+    .footer-column ul { list-style: none; padding: 0; margin: 0; }
+    .footer-column ul li { margin-bottom: 6px; }
+    .footer-column ul li a { color: inherit; text-decoration: none; }
+    .footer-column ul li a:hover { color: var(--link-color-dark); }
+    .social-icons a { margin: 0 8px; font-size: 20px; color: inherit; }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="header-right">
+      <button id="theme-toggle" aria-label="Perjungti režimą">🌙</button>
+      <a href="#" aria-label="LT"><img src="https://flagcdn.com/24x18/lt.png" alt="LT" /></a>
+    </div>
+  </header>
+
+  <!-- Secondary Navigation -->
+  <section class="top-nav" style="background: var(--nav-bg-dark); color: var(--text-dark); padding:10px 20px; display:flex; align-items:center; justify-content:space-between;">
+    <div class="nav-left" style="display:flex; align-items:center; gap:24px;">
+      <a href="index.html"><img src="sybau.png" alt="Toniro logo" style="height: 64px;"></a>
+      <a href="apie.html" style="color:inherit; text-decoration:none; font-weight:600;">Apie mus</a>
+      <a href="pagalba.html" style="color:inherit; text-decoration:none; font-weight:600;">Susisiekime</a>
+    </div>
+    <div class="nav-right" style="display:flex; gap:16px; align-items:center;">
+      <button class="icon-button" style="position:relative; background:transparent; border:none; font-size:20px; cursor:pointer;">
+      </button>
+    </div>
+  </section>
+
+  <!-- Main content -->
+  <main>
+    <!-- Paslaugos skyrius -->
+    <section class="cards-section" id="paslaugos">
+      <div class="card">
+        <h3>3D Spausdinimas</h3>
+        <p>FDM</p>
+        <ul>
+          <li>• Plastikas</li>
+          <li>• Tikslumas iki 0.2 mm</li>
+          <li>• Gamybos trukmė nuo 1 d.</li>
+        </ul>
+        <button onclick="location.href='spausdinimas.html'">Gauti kainą</button>
+      </div>
+    </section>
+
+    <!-- Klientų atsiliepimai -->
+    <section class="clients-section" id="susisiekime">
+      <h2>Ką sako mūsų klientai</h2>
+      <div class="clients-cards">
+        <div class="client-card">
+          <p>„Toniro 3D spausdinimo paslauga leidžia naudoti pažangias technologijas už prieinamą kainą. Tobula prototipams.“</p>
+          <strong>Jonas M.</strong>
+        </div>
+        <div class="client-card">
+          <p>„Užsakiau didelį kiekį dalių – kokybė nustebino!“</p>
+          <strong>Rūta Elektronika</strong>
+        </div>
+        <div class="client-card">
+          <p>„Greitai, kokybiškai ir už gerą kainą.“</p>
+          <strong>Tomas S.</strong>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-sections">
+      <div class="footer-column">
+        <h4>ĮMONĖ</h4>
+        <ul>
+          <li><a href="apie.html">Apie mus</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>PAGALBA</h4>
+        <ul>
+          <li><a href="pagalba.html">Susisiekime</a></li>
+        </ul>
+      </div>
+      <div class="footer-column social-footer">
+        <p>SEKITE MUS</p>
+        <div class="social-icons">
+          <a href="https://www.facebook.com/people/Toniro/" target="_blank"><i class="fab fa-facebook"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!localStorage.getItem('theme')) localStorage.setItem('theme', 'dark');
+      const btn = document.getElementById('theme-toggle');
+      const light = localStorage.getItem('theme') === 'light';
+      document.documentElement.classList.toggle('light-mode', light);
+      btn.textContent = light ? '🌞' : '🌙';
+      btn.addEventListener('click', () => {
+        const isLight = document.documentElement.classList.toggle('light-mode');
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        btn.textContent = isLight ? '🌞' : '🌙';
+      });
+    });
+  </script>
+</body>
+</html>
